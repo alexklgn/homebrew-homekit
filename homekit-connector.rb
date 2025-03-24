@@ -1,7 +1,7 @@
 class HomekitConnector < Formula
   desc "HomekitConnector - A macOS menubar app for HomeKit control"
   homepage "https://github.com/alexklgn/HomekitConnector"
-  url "https://github.com/alexklgn/HomekitConnector/releases/download/v1.0.0/HomekitConnector.dmg"
+  url "https://github.com/alexklgn/homebrew-homekit/raw/main/HomekitConnector.dmg"
   sha256 "1a2bc7a8ce42724f2049ba9cf744a1889f1206b5dc22adc88f49189000186a6d"
   version "1.0.0"
   
