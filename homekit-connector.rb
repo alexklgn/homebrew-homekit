@@ -6,16 +6,21 @@ class HomekitConnector < Formula
   version "1.0.0"
   
   def install
-    # Mount the DMG
-    mount_point = `/usr/bin/mktemp -d /tmp/homebrew-homekit-connector.XXXXXX`.chomp
-    dmg_path = cached_download
-    system "/usr/bin/hdiutil", "attach", "-mountpoint", mount_point, "-nobrowse", dmg_path
-    
     # Create a temporary directory for the app
     temp_dir = `/usr/bin/mktemp -d /tmp/homebrew-homekit-app.XXXXXX`.chomp
     
+    # Get the DMG path
+    dmg_path = cached_download
+    
+    # Check if the DMG is already mounted and unmount it if necessary
+    system "/usr/bin/hdiutil", "info", "| grep -q #{dmg_path} && /usr/bin/hdiutil detach $(hdiutil info | grep #{dmg_path} | awk '{print $1}') || true"
+    
+    # Mount the DMG
+    mount_point = `/usr/bin/mktemp -d /tmp/homebrew-homekit-connector.XXXXXX`.chomp
+    system "/usr/bin/hdiutil", "attach", "-mountpoint", mount_point, "-nobrowse", dmg_path
+    
     # Copy the app to the temporary directory
-    system "/usr/bin/cp", "-R", "#{mount_point}/HomekitConnector.app", temp_dir
+    system "/bin/cp", "-R", "#{mount_point}/HomekitConnector.app", temp_dir
     
     # Unmount the DMG
     system "/usr/bin/hdiutil", "detach", mount_point
