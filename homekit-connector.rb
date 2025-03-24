@@ -11,11 +11,20 @@ class HomekitConnector < Formula
     dmg_path = cached_download
     system "/usr/bin/hdiutil", "attach", "-mountpoint", mount_point, "-nobrowse", dmg_path
     
-    # Copy the app to the Applications directory
-    prefix.install Dir["#{mount_point}/*.app"]
+    # Create a temporary directory for the app
+    temp_dir = `/usr/bin/mktemp -d /tmp/homebrew-homekit-app.XXXXXX`.chomp
+    
+    # Copy the app to the temporary directory
+    system "/usr/bin/cp", "-R", "#{mount_point}/HomekitConnector.app", temp_dir
     
     # Unmount the DMG
     system "/usr/bin/hdiutil", "detach", mount_point
+    
+    # Install the app from the temporary directory
+    prefix.install "#{temp_dir}/HomekitConnector.app"
+    
+    # Clean up the temporary directory
+    system "/bin/rm", "-rf", temp_dir
   end
 
   def caveats
