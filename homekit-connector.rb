@@ -8,7 +8,7 @@ class HomekitConnector < Formula
   def install
     # Mount the DMG
     mount_point = `/usr/bin/mktemp -d /tmp/homebrew-homekit-connector.XXXXXX`.chomp
-    system "/usr/bin/hdiutil", "attach", "-mountpoint", mount_point, "-nobrowse", "#{staged_path}/HomekitConnector.dmg"
+    system "/usr/bin/hdiutil", "attach", "-mountpoint", mount_point, "-nobrowse", "#{buildpath}/HomekitConnector.dmg"
     
     # Copy the app to the Applications directory
     prefix.install Dir["#{mount_point}/*.app"]
