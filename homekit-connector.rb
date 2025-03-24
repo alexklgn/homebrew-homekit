@@ -12,8 +12,8 @@ class HomekitConnector < Formula
     # Get the DMG path
     dmg_path = cached_download
     
-    # Check if the DMG is already mounted and unmount it if necessary
-    system "/usr/bin/hdiutil", "info", "| grep -q #{dmg_path} && /usr/bin/hdiutil detach $(hdiutil info | grep #{dmg_path} | awk '{print $1}') || true"
+    # Check if the DMG is already mounted and unmount it
+    system "/bin/bash", "-c", "for disk in $(/usr/bin/hdiutil info | /usr/bin/grep #{dmg_path} | /usr/bin/awk '{print $1}'); do /usr/bin/hdiutil detach \"$disk\" 2>/dev/null || true; done"
     
     # Mount the DMG
     mount_point = `/usr/bin/mktemp -d /tmp/homebrew-homekit-connector.XXXXXX`.chomp
